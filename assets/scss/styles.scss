@@ -1,0 +1,27 @@
+// USE CUSTOM VARIABLES
+@use "./variables" as *;
+
+// MIXINS
+@use "./mixins" as mix;
+
+// REBOOT/NORMALIZE CSS
+@use "./reboot";
+
+body {
+  background-color: $primary;
+}
+
+nav {
+  box-shadow: 0px 5px 10px 0px rgba(201, 167, 39, 0.2);
+  .logo {
+    width: 50px;
+    display: block;
+  }
+
+  .nav-button {
+    @include mix.btn;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+}
