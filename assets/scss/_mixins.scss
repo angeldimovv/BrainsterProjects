@@ -1,0 +1,9 @@
+@use "./variables" as *;
+
+@mixin btn {
+  background-color: $body-accent;
+  border: 2px solid $body-accent;
+  border-radius: 8px;
+  color: white;
+  transition: all 0.25s ease-in;
+}
