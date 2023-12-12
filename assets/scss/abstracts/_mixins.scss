@@ -1,6 +1,6 @@
 @use "./variables" as *;
 
-@mixin btn {
+@mixin button {
   background-color: $body-accent;
   border: 2px solid $body-accent;
   border-radius: 8px;
