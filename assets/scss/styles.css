@@ -123,4 +123,11 @@ main .cards .card .category span {
 }
 main .cards .card .card-date {
   font-size: 12px;
+}
+
+footer {
+  background-color: rgb(48, 47, 56);
+}
+footer span i {
+  color: rgb(233, 16, 9);
 }/*# sourceMappingURL=styles.css.map */
