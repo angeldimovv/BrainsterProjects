@@ -1,0 +1,10 @@
+@use "../abstracts" as *;
+
+footer {
+  background-color: $secondary;
+  span {
+    i {
+      color: $body-accent;
+    }
+  }
+}
