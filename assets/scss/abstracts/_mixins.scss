@@ -3,7 +3,7 @@
 @mixin button {
   background-color: $body-accent;
   border: 2px solid $body-accent;
-  border-radius: 8px;
+  border-radius: 5px;
   color: white;
   transition: all 0.25s ease-in;
 }
