@@ -2,7 +2,7 @@
 
 main {
   #filters {
-    background-color: $filter-accent;
+    background-color: $secondary;
     label {
       display: flex;
       justify-content: space-between;
@@ -19,7 +19,7 @@ main {
         font-size: 2rem;
         margin-bottom: 0;
         flex-basis: 15%;
-        color: $filter-accent;
+        color: $secondary;
         text-align: right;
         transition: all 0.25s ease;
       }
