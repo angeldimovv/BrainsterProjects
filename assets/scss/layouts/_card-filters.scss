@@ -1,0 +1,59 @@
+@use "../abstracts" as *;
+
+main {
+  #filters {
+    background-color: $filter-accent;
+    label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      p {
+        color: white;
+        margin-bottom: 0;
+        font-weight: bold;
+        flex-basis: 85%;
+        user-select: none;
+      }
+      i {
+        font-size: 2rem;
+        margin-bottom: 0;
+        flex-basis: 15%;
+        color: $filter-accent;
+        text-align: right;
+        transition: all 0.25s ease;
+      }
+      &.active {
+        background-color: $body-accent;
+      }
+    }
+  }
+  input[type="checkbox"] {
+    display: none;
+  }
+  .cards {
+    .learn-more-btn,
+    .loadmore {
+      @include button;
+    }
+    .card {
+      border: 0;
+      box-shadow: 2px 3px 8px 2px rgba(30, 30, 30, 0.28);
+      transition: all 0.3s ease;
+      &:hover {
+        transform: scale(1.03);
+        box-shadow: 1px 5px 10px 1px rgba(30, 30, 30, 0.2);
+      }
+      .category {
+        span {
+          background-color: $primary;
+          font-size: 12px;
+          font-weight: 700;
+        }
+      }
+      .card-date {
+        font-size: 12px;
+      }
+    }
+  }
+}
