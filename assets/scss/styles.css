@@ -99,8 +99,7 @@ main #filters label.active {
 main input[type=checkbox] {
   display: none;
 }
-main .cards .learn-more-btn,
-main .cards .loadmore {
+main .cards .learn-more-btn {
   background-color: rgb(233, 16, 9);
   border: 2px solid rgb(233, 16, 9);
   border-radius: 5px;
@@ -130,4 +129,37 @@ footer {
 }
 footer span i {
   color: rgb(233, 16, 9);
+}
+
+main form {
+  font-family: Geneva, Tahoma, sans-serif;
+}
+main form label {
+  font-size: 14.5px !important;
+}
+main form .form-control::-moz-placeholder {
+  font-style: italic;
+  font-size: 13px !important;
+  opacity: 0.75;
+}
+main form .form-control::placeholder {
+  font-style: italic;
+  font-size: 13px !important;
+  opacity: 0.75;
+}
+main form .form-control:focus {
+  outline: 1px solid #254deb;
+  box-shadow: none;
+}
+main form .submit-btn.btn:hover {
+  background-color: rgb(233, 16, 9);
+  color: white;
+}
+main form .submit-btn {
+  background-color: rgb(233, 16, 9);
+  border: 2px solid rgb(233, 16, 9);
+  border-radius: 5px;
+  color: white;
+  transition: all 0.25s ease-in;
+  padding: 14px 16px !important;
 }/*# sourceMappingURL=styles.css.map */
