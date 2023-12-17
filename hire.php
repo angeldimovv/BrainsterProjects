@@ -25,7 +25,7 @@
   </head>
   <body class="d-flex flex-column min-vh-100">
     <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid my-4 mx-5">
+      <div class="container-fluid my-1 my-md-4 mx-2 mx-md-5">
         <a href="#" class="logo">
           <img src="./assets/images/logo.png" alt="Brainster" />
         </a>
@@ -38,7 +38,10 @@
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+        <div id="nav-icon">
+            <span></span><span></span><span></span><span></span><span></span
+            ><span></span>
+          </div>
         </button>
 
         <div
