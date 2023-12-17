@@ -32,8 +32,7 @@ main {
     display: none;
   }
   .cards {
-    .learn-more-btn,
-    .loadmore {
+    .learn-more-btn {
       @include button;
     }
     .card {
