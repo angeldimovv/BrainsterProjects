@@ -1,0 +1,27 @@
+@use "../abstracts" as *;
+
+main {
+  form {
+    font-family: Geneva, Tahoma, sans-serif;
+    label {
+      font-size: 14.5px !important;
+    }
+    .form-control::placeholder {
+      font-style: italic;
+      font-size: 13px !important;
+      opacity: 0.75;
+    }
+    .form-control:focus {
+      outline: 1px solid #254deb;
+      box-shadow: none;
+    }
+    .submit-btn.btn:hover {
+      background-color: $body-accent;
+      color: white;
+    }
+    .submit-btn {
+      @include button;
+      padding: 14px 16px !important;
+    }
+  }
+}
