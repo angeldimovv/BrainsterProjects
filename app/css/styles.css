@@ -38,8 +38,12 @@
   position: absolute;
   overflow: hidden;
   top: 0;
-  background-color: #81b3fe;
   transform: rotateY(180deg);
+}
+
+.back,
+.bookInfo {
+  background-color: #81b3fe;
 }
 
 .admin-section {
