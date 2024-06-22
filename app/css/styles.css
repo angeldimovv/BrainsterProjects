@@ -41,3 +41,11 @@
   background-color: #81b3fe;
   transform: rotateY(180deg);
 }
+
+.admin-section {
+  display: none !important;
+}
+
+.on-click {
+  transform: scale(1.08);
+}
