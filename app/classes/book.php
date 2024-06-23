@@ -28,6 +28,18 @@ class Book
         return $book;
     }
 
+    public function getBookByTitle($title)
+    {
+        $db = new Connection();
+        $book = $db->run(
+            "SELECT * FROM book WHERE title = :title",
+            ["title" => $title]
+        )->fetch();
+        $db->kill();
+
+        return $book;
+    }
+
     public function getAllBookDataById($bookId)
     {
         $db = new Connection();
@@ -46,44 +58,63 @@ class Book
         return $data;
     }
 
-    public function addBook($bookData)
+    public function addBook($title, $authorId, $categoryId, $publicationYear, $numPages, $imageUrl)
     {
         $db = new Connection();
         $result = $db->run(
             "INSERT INTO book (title, author_id, category_id, publication_year, pages, image_url)
-            VALUES (:title, :author_id, :category_id, :publication_year, :pages, :image_url)",
-            $bookData
+            VALUES (:title, :authorId, :categoryId, :publicationYear, :numPages, :imageUrl)",
+            [
+                "title" => $title,
+                "authorId" => $authorId,
+                "categoryId" => $categoryId,
+                "publicationYear" => $publicationYear,
+                "numPages" => $numPages,
+                "imageUrl" => $imageUrl
+            ]
         );
         $db->kill();
 
         return $result;
     }
 
-    public function modifyBook($bookData)
+    public function updateBook($bookId, $title, $authorId, $categoryId, $publicationYear, $numPages, $imageUrl)
     {
         $db = new Connection();
-        $db->run(
+        $result = $db->run(
             "UPDATE book
             SET title = :title,
-                author_id = :author_id,
-                category_id = :category_id,
-                publication_year = :publication_year,
-                pages = :pages,
-                image_url = :image_url
+                author_id = :authorId,
+                category_id = :categoryId,
+                publication_year = :publicationYear,
+                pages = :numPages,
+                image_url = :imageUrl
             WHERE id = :bookId",
-            $bookData
+            [
+                "title" => $title,
+                "authorId" => $authorId,
+                "categoryId" => $categoryId,
+                "publicationYear" => $publicationYear,
+                "numPages" => $numPages,
+                "imageUrl" => $imageUrl,
+                "bookId" => $bookId
+            ]
         );
         $db->kill();
+
+        return $result;
     }
 
     public function deleteBook($bookId)
     {
         $db = new Connection();
-        $db->run(
+        $result = $db->run(
             "DELETE FROM book 
             WHERE id = :bookId",
             ["bookId" => $bookId]
         );
         $db->kill();
+
+        return $result;
     }
 }

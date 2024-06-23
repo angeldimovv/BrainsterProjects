@@ -13,6 +13,8 @@ $categoryObj = new Category();
 $commentObj = new Comment();
 
 $allAuthors = $authorObj->getAllAuthors();
+$allBooks = $bookObj->getAllBooks();
+$allCategories = $categoryObj->getAllCategories();
 
 
 if (!$_SESSION['loginStatus']) {
@@ -171,7 +173,7 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
                         <div class="mb-4 col-4">
                             <label id="selectAuthor" class="form-label">Select Author:</label>
                             <select class="form-select" name="selectAuthor" id="selectAuthor" required>
-                                <option selected disabled>Select an Author</option>
+                                <option value="" disabled selected>Select an Author</option>
                                 <?php foreach ($allAuthors as $author) {
                                     echo '<option value="' . $author['id'] . '">' . $author['first_name'] . ' ' . $author['last_name'] . '</option>';
                                 }
@@ -197,7 +199,56 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
                 </form>
             </div>
             <div id="manageBooks" class="flex-column align-items-center admin-section mb-5">
-                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5">
+                <?php if (isset($_SESSION['createBookSuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['createBookSuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['createBookErrors'])) : ?>
+                    <?php if (!empty($_SESSION['createBookErrors']['title'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createBookErrors']['title'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createBookErrors']['authorName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createBookErrors']['authorName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createBookErrors']['categoryName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createBookErrors']['categoryName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createBookErrors']['publicationYear'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createBookErrors']['publicationYear'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createBookErrors']['numPages'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createBookErrors']['numPages'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createBookErrors']['imageUrl'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createBookErrors']['imageUrl'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createBookErrors']['bookExists'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createBookErrors']['bookExists'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createBookErrors']['book'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createBookErrors']['book'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5" action="./processing/add-book.php" method="POST">
                     <h4>Add a new Book:</h4>
                     <div class="row g-2 align-items-center flex-column my-4">
                         <div class="col-auto">
@@ -207,13 +258,21 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
                         <div class="col-4">
                             <label id="selectAuthor" class="form-label">Select Author:</label>
                             <select class="form-select" name="selectAuthor" id="selectAuthor" required>
-                                <option selected disabled>Select an Author</option>
+                                <option value="" disabled selected>Select an Author</option>
+                                <?php foreach ($allAuthors as $author) {
+                                    echo '<option value="' . $author['id'] . '">' . $author['first_name'] . ' ' . $author['last_name'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="col-4">
                             <label id="selectCategory" class="form-label">Select Category:</label>
                             <select class="form-select" name="selectCategory" id="selectCategory" required>
-                                <option selected disabled>Select a Category</option>
+                                <option value="" disabled selected>Select a Category</option>
+                                <?php foreach ($allCategories as $category) {
+                                    echo '<option value="' . $category['id'] . '">' . $category['name'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="col-auto">
@@ -221,8 +280,8 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
                             <input type="number" class="form-control" name="publicationYear" id="publicationYear" required />
                         </div>
                         <div class="col-auto">
-                            <label for="numOfPages" class="form-label">Number of Pages: </label>
-                            <input type="number" class="form-control" name="numOfPages" id="numOfPages" required />
+                            <label for="numPages" class="form-label">Number of Pages: </label>
+                            <input type="number" class="form-control" name="numPages" id="numPages" required />
                         </div>
                         <div class="col-auto">
                             <label for="imageUrl" class="form-label">Image URL: </label>
@@ -231,42 +290,110 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
                     </div>
                     <button type="submit" class="btn btn-primary float-end px-4">Add Book</button>
                 </form>
-                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5">
+                <?php if (isset($_SESSION['editBookSuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['editBookSuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['editBookErrors'])) : ?>
+                    <?php if (!empty($_SESSION['editBookErrors']['editTitle'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editBookErrors']['editTitle'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editBookErrors']['editAuthorName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editBookErrors']['editAuthorName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editBookErrors']['editCategoryName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editBookErrors']['editCategoryName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editBookErrors']['editPublicationYear'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editBookErrors']['editPublicationYear'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editBookErrors']['editNumPages'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editBookErrors']['editNumPages'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editBookErrors']['editImageUrl'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editBookErrors']['editImageUrl'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editBookErrors']['book'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editBookErrors']['book'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['softDeleteAuthorSuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['softDeleteAuthorSuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php elseif (isset($_SESSION['softDeleteAuthorErrors'])) : ?>
+                    <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['softDeleteAuthorErrors'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5" action="./processing/edit-delete-book.php" method="POST">
                     <h4>Edit or Remove a Book:</h4>
                     <div class="row g-2 align-items-center flex-column my-4">
                         <div class="col-4">
                             <label id="selectBook" class="form-label">Select Book:</label>
                             <select class="form-select" name="selectBook" id="selectBook" required>
-                                <option selected disabled>Select a Book</option>
+                                <option value="" disabled selected>Select a Book</option>
+                                <?php foreach ($allBooks as $book) {
+                                    echo '<option value="' . $book['id'] . '">' . $book['title'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
+                        <input type="number" id="bookId" name="bookId" hidden>
                         <div class="col-auto">
-                            <label for="title" class="form-label">Title: </label>
-                            <input type="text" class="form-control" name="title" id="title" required />
+                            <label for="editTitle" class="form-label">Title: </label>
+                            <input type="text" class="form-control" name="editTitle" id="editTitle" required />
                         </div>
                         <div class="col-4">
-                            <label id="selectAuthor" class="form-label">Select Author:</label>
-                            <select class="form-select" name="selectAuthor" id="selectAuthor" required>
-                                <option selected disabled>Select an Author</option>
+                            <label id="editAuthorName" class="form-label">Select Author:</label>
+                            <select class="form-select" name="editAuthorName" id="editAuthorName" required>
+                                <option value="" disabled selected>Select an Author</option>
+                                <?php foreach ($allAuthors as $author) {
+                                    echo '<option value="' . $author['id'] . '">' . $author['first_name'] . ' ' . $author['last_name'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="col-4">
-                            <label id="selectCategory" class="form-label">Select Category:</label>
-                            <select class="form-select" name="selectCategory" id="selectCategory" required>
-                                <option selected disabled>Select a Category</option>
+                            <label id="editCategoryName" class="form-label">Select Category:</label>
+                            <select class="form-select" name="editCategoryName" id="editCategoryName" required>
+                                <option value="" disabled selected>Select a Category</option>
+                                <?php foreach ($allCategories as $category) {
+                                    echo '<option value="' . $category['id'] . '">' . $category['name'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                         <div class="col-auto">
-                            <label for="publicationYear" class="form-label">Publication Year: </label>
-                            <input type="number" class="form-control" name="publicationYear" id="publicationYear" required />
+                            <label for="editPublicationYear" class="form-label">Publication Year: </label>
+                            <input type="number" class="form-control" name="editPublicationYear" id="editPublicationYear" required />
                         </div>
                         <div class="col-auto">
-                            <label for="numOfPages" class="form-label">Number of Pages: </label>
-                            <input type="number" class="form-control" name="numOfPages" id="numOfPages" required />
+                            <label for="editNumPages" class="form-label">Number of Pages: </label>
+                            <input type="number" class="form-control" name="editNumPages" id="editNumPages" required />
                         </div>
                         <div class="col-auto">
-                            <label for="imageUrl" class="form-label">Image URL: </label>
-                            <input type="url" class="form-control" name="imageUrl" id="imageUrl" required />
+                            <label for="editImageUrl" class="form-label">Image URL: </label>
+                            <input type="url" class="form-control" name="editImageUrl" id="editImageUrl" required />
                         </div>
                     </div>
                     <button type="submit" name="softDeleteBook" class="btn btn-primary float-end px-4">Remove Book</button>
@@ -274,28 +401,90 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
                 </form>
             </div>
             <div id="manageCategories" class="flex-column align-items-center admin-section mb-5">
-                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5">
+                <?php if (isset($_SESSION['createCategorySuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['createCategorySuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['createCategoryErrors'])) : ?>
+                    <?php if (!empty($_SESSION['createCategoryErrors']['categoryName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createCategoryErrors']['categoryName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createCategoryErrors']['categoryExists'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createCategoryErrors']['categoryExists'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createCategoryErrors']['category'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createCategoryErrors']['category'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5" action="./processing/add-category.php" method="POST">
                     <h4>Add a new Category:</h4>
                     <div class="row g-2 align-items-center flex-column my-4">
                         <div class="col-auto">
-                            <label for="category" class="form-label">Category Name: </label>
-                            <input type="text" class="form-control" name="category" id="category" required />
+                            <label for="categoryName" class="form-label">Category Name: </label>
+                            <input type="text" class="form-control" name="categoryName" id="categoryName" required />
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary float-end px-4">Add Category</button>
                 </form>
-                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5">
+                <?php if (isset($_SESSION['editCategorySuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['editCategorySuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['editCategoryErrors'])) : ?>
+                    <?php if (!empty($_SESSION['editCategoryErrors']['editCategoryName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editCategoryErrors']['editCategoryName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editCategoryErrors']['category'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editCategoryErrors']['category'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['deleteCategorySuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['deleteCategorySuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['deleteCategoryErrors'])) : ?>
+                    <?php if (!empty($_SESSION['deleteCategoryErrors']['category'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['deleteCategoryErrors']['category'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5" action="./processing/edit-delete-category.php" method="POST">
                     <h4>Edit or Remove Category:</h4>
                     <div class="row g-2 flex-column align-items-center my-4">
                         <div class="col-4 mb-4">
                             <label id="selectCategory" class="form-label">Select Category:</label>
                             <select class="form-select" name="selectCategory" id="selectCategory" required>
-                                <option selected disabled>Select a Category</option>
+                                <option value="" disabled selected>Select a Category</option>
+                                <?php foreach ($allCategories as $category) {
+                                    echo '<option value="' . $category['id'] . '">' . $category['name'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
+                        <input type="number" id="categoryId" name="categoryId" hidden>
                         <div class="col-auto">
-                            <label for="category" class="form-label">Category Name: </label>
-                            <input type="text" class="form-control" name="category" id="category" required />
+                            <label for="editCategoryName" class="form-label">Category Name: </label>
+                            <input type="text" class="form-control" name="editCategoryName" id="editCategoryName" required />
                         </div>
                     </div>
                     <button type="submit" name="softDeleteCategory" class="btn btn-primary float-end px-4">Remove Category</button>
@@ -346,5 +535,14 @@ unset($_SESSION['editAuthorErrors']);
 
 unset($_SESSION['softDeleteAuthorSuccess']);
 unset($_SESSION['softDeleteAuthorErrors']);
+
+unset($_SESSION['createBookSuccess']);
+unset($_SESSION['createBookErrors']);
+
+unset($_SESSION['editBookSuccess']);
+unset($_SESSION['editBookErrors']);
+
+unset($_SESSION['softDeleteBookSuccess']);
+unset($_SESSION['softDeleteBookErrors']);
 
 ?>
