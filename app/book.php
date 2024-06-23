@@ -1,3 +1,27 @@
+<?php
+require_once './imports.php';
+
+use App\Classes\Book\Book;
+
+if (!isset($_GET['id'])) {
+    header('Location: index.php');
+    exit();
+}
+
+
+$bookObj = new Book();
+$bookId = $_GET['id'];
+
+$currentBook = $bookObj->getAllBookDataById($bookId);
+
+if (!$currentBook) {
+    header('Location: index.php');
+    exit();
+}
+
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -45,17 +69,17 @@
     <main class="bg-light d-flex flex-column align-items-center">
         <div class="container py-5">
             <div class="row gx-5 justify-content-center">
-                <div class="col-5">
-                    <img class="overflow-hidden rounded-3 border border-dark-subtle" src="https://api.dicebear.com/9.x/pixel-art/svg" alt="">
+                <div class="col-5 d-flex justify-content-center">
+                    <img class="overflow-hidden rounded-3 border border-dark-subtle" src="<?= $currentBook['image_url'] ?>" alt="" style="height:450px;">
                 </div>
                 <div class="col-7">
                     <div class="bookInfo rounded-3 border border-dark-subtle d-flex flex-column align-items-center py-3 mb-5">
-                        <h3 class="text-center fw-bold">Title</h3>
+                        <h3 class="text-center fw-bold"><?= $currentBook['title'] ?></h3>
                         <hr class="w-75 mt-1 border-2">
-                        <p class="fs-5 fw-semibold mb-2"><span class="fw-bold">Author: </span>Test Test</p>
-                        <p class="fs-5 fw-semibold mb-2"><span class="fw-bold">Category: </span>Category 1</p>
-                        <p class="fs-5 fw-semibold mb-2"><span class="fw-bold">Published on: </span>2003</p>
-                        <p class="fs-5 fw-semibold mb-2"><span class="fw-bold">Pages: </span>666</p>
+                        <p class="fs-5 fw-semibold mb-2"><span class="fw-bold">Author: </span><?= $currentBook['authorFirstName'] ?> <?= $currentBook['authorLastName'] ?></p>
+                        <p class="fs-5 fw-semibold mb-2"><span class="fw-bold">Category: </span><?= $currentBook['categoryName'] ?></p>
+                        <p class="fs-5 fw-semibold mb-2"><span class="fw-bold">Published on: </span><?= $currentBook['publication_year'] ?></p>
+                        <p class="fs-5 fw-semibold mb-2"><span class="fw-bold">Pages: </span><?= $currentBook['pages'] ?></p>
                     </div>
                     <div class="bg-secondary-subtle rounded-3 border border-dark-subtle p-3 d-flex flex-column">
                         <p class="fw-semibold mb-2">On <span class="fw-bold fst-italic">06.12.2024</span> you noted:</p>

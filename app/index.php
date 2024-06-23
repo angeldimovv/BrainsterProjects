@@ -1,5 +1,14 @@
 <?php
-session_start();
+require_once './imports.php';
+
+use App\Classes\Book\Book;
+
+$bookObj = new Book();
+
+$allBooks = $bookObj->getAllBooks();
+
+echo '<pre>' . var_export($allBooks, true) . '</pre>';
+
 ?>
 
 <!doctype html>
@@ -94,23 +103,27 @@ session_start();
         <hr class="m-0">
         <div class="container my-5">
             <div class="row row-cols-1 row-cols-lg-4 g-4">
-                <div class="col">
-                    <div class="card rounded-3 shadow-lg">
-                        <div class="content w-100 h-100">
-                            <div class="front">
-                                <img src="https://api.dicebear.com/9.x/pixel-art/svg" alt="">
-                            </div>
-                            <div class="back rounded-3 py-4 text-start d-flex flex-column align-items-center text-dark">
-                                <h2 class="fs-2 fw-bold">Title</h2>
-                                <hr class="w-75 border-2">
-                                <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Author: </span>Test Test</p>
-                                <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Category: </span>Category 1</p>
-                                <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Published on: </span>2003</p>
-                                <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Pages: </span>666</p>
+                <?php foreach ($allBooks as $book) {
+                    $currentBook = $bookObj->getAllBookDataById($book['id']);
+                ?>
+                    <div class="col">
+                        <div class="card rounded-3 shadow-lg">
+                            <div class="content w-100 h-100">
+                                <div class="front">
+                                    <img src="<?= $currentBook['image_url'] ?>" alt="" style="height:400px;">
+                                </div>
+                                <div class="back rounded-3 py-4 text-start d-flex flex-column align-items-center text-dark">
+                                    <h2 class="fs-3 fw-bold text-center"><?= $currentBook['title'] ?></h2>
+                                    <hr class="w-75 border-2">
+                                    <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Author: </span><?= $currentBook['authorFirstName'] ?> <?= $currentBook['authorLastName'] ?></p>
+                                    <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Category: </span><?= $currentBook['categoryName'] ?></p>
+                                    <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Published on: </span><?= $currentBook['publication_year'] ?></p>
+                                    <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Pages: </span><?= $currentBook['pages'] ?></p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
     </main>

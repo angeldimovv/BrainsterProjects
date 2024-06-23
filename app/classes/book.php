@@ -50,7 +50,7 @@ class Book
                   FROM book
                     JOIN author ON book.author_id = author.id
                     JOIN category on book.category_id = category.id
-                    WHERE books.id = :bookId",
+                    WHERE book.id = :bookId",
             ["bookId" => $bookId]
         )->fetch();
         $db->kill();
