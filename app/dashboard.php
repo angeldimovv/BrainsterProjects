@@ -1,5 +1,19 @@
 <?php
-session_start();
+
+require_once './imports.php';
+
+use App\Classes\Author\Author;
+use App\Classes\Book\Book;
+use App\Classes\Category\Category;
+use App\Classes\Comment\Comment;
+
+$authorObj = new Author();
+$bookObj = new Book();
+$categoryObj = new Category();
+$commentObj = new Comment();
+
+$allAuthors = $authorObj->getAllAuthors();
+
 
 if (!$_SESSION['loginStatus']) {
     header('Location: login.php');
@@ -64,7 +78,36 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
         </section>
         <div class="d-flex flex-column h-100 w-75 admin-panel">
             <div id="manageAuthors" class="flex-column align-items-center admin-section mb-5">
-                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5">
+                <?php if (isset($_SESSION['createAuthorSuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['createAuthorSuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['createAuthorErrors'])) : ?>
+                    <?php if (!empty($_SESSION['createAuthorErrors']['authorExists'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createAuthorErrors']['authorExists'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createAuthorErrors']['firstName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createAuthorErrors']['firstName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createAuthorErrors']['lastName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createAuthorErrors']['lastName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['createAuthorErrors']['bio'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['createAuthorErrors']['bio'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5" action="./processing/add-author.php" method="POST">
                     <h4>Add a new Author:</h4>
                     <div class="row g-2 align-items-center flex-column my-4">
                         <div class="col-auto">
@@ -82,26 +125,71 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
                     </div>
                     <button type="submit" class="btn btn-primary float-end px-4">Add Author</button>
                 </form>
-                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5">
+                <?php if (isset($_SESSION['editAuthorSuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['editAuthorSuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['editAuthorErrors'])) : ?>
+                    <?php if (!empty($_SESSION['editAuthorErrors']['editFirstName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editAuthorErrors']['editFirstName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editAuthorErrors']['editLastName'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editAuthorErrors']['editLastName'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editAuthorErrors']['author'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editAuthorErrors']['author'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php elseif (!empty($_SESSION['editAuthorErrors']['editBio'])) : ?>
+                        <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                            <p class="m-0 ms-4"><?= $_SESSION['editAuthorErrors']['editBio'] ?></p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    <?php endif; ?>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['softDeleteAuthorSuccess'])) : ?>
+                    <div class="alert bg-success alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['softDeleteAuthorSuccess'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php elseif (isset($_SESSION['softDeleteAuthorErrors'])) : ?>
+                    <div class="alert bg-danger alert-dismissible fade show rounded-2 mt-5 text-light fw-semibold w-25 text-center" id="">
+                        <p class="m-0 ms-4"><?= $_SESSION['softDeleteAuthorErrors'] ?></p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+                <form class="border rounded-3 border-1 w-50 p-4 bg-light mt-5" action="./processing/edit-delete-author.php" method="POST">
                     <h4>Edit or Remove Author:</h4>
                     <div class="row flex-column g-2 align-items-center my-4">
                         <div class="mb-4 col-4">
                             <label id="selectAuthor" class="form-label">Select Author:</label>
                             <select class="form-select" name="selectAuthor" id="selectAuthor" required>
                                 <option selected disabled>Select an Author</option>
+                                <?php foreach ($allAuthors as $author) {
+                                    echo '<option value="' . $author['id'] . '">' . $author['first_name'] . ' ' . $author['last_name'] . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
+                        <input type="number" id="authorId" name="authorId" hidden>
                         <div class="col-auto">
-                            <label for="firstName" class="form-label">First Name: </label>
-                            <input type="text" class="form-control" name="firstName" id="firstName" required />
+                            <label for="editFirstName" class="form-label">First Name: </label>
+                            <input type="text" class="form-control" name="editFirstName" id="editFirstName" required />
                         </div>
                         <div class="col-auto">
-                            <label for="lastName" class="form-label">Last Name: </label>
-                            <input type="text" class="form-control" name="lastName" id="lastName" required />
+                            <label for="editLastName" class="form-label">Last Name: </label>
+                            <input type="text" class="form-control" name="editLastName" id="editLastName" required />
                         </div>
                         <div class="col-auto">
-                            <label for="bio" class="form-label">Short Bio: </label>
-                            <textarea class="form-control" name="bio" id="bio" required rows="3" aria-required="true"></textarea>
+                            <label for="editBio" class="form-label">Short Bio: </label>
+                            <textarea class="form-control" name="editBio" id="editBio" required rows="3" aria-required="true"></textarea>
                         </div>
                     </div>
                     <button type="submit" name="softDeleteAuthor" class="btn btn-primary float-end px-4">Remove Author</button>
@@ -248,3 +336,15 @@ if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
 </body>
 
 </html>
+
+<?php
+unset($_SESSION['createAuthorSuccess']);
+unset($_SESSION['createAuthorErrors']);
+
+unset($_SESSION['editAuthorSuccess']);
+unset($_SESSION['editAuthorErrors']);
+
+unset($_SESSION['softDeleteAuthorSuccess']);
+unset($_SESSION['softDeleteAuthorErrors']);
+
+?>

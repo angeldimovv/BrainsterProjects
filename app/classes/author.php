@@ -21,7 +21,7 @@ class Author
     {
         $db = new Connection();
         $authors = $db->run(
-            "SELECT * FROM author WHERE is_deleted=0 AND id = :authorId",
+            "SELECT * FROM author WHERE is_deleted IS NULL AND id = :authorId",
             ["authorId" => $authorId]
         )->fetch();
         $db->kill();
@@ -42,13 +42,50 @@ class Author
         return $author->fetch();
     }
 
-    public function addAuthor($authorData)
+    public function addAuthor($firstName, $lastName, $bio)
     {
         $db = new Connection();
         $result = $db->run(
             "INSERT INTO author (first_name, last_name, bio)
             VALUES (:firstName, :lastName, :bio)",
-            $authorData
+            [
+                "firstName" => $firstName,
+                "lastName" => $lastName,
+                "bio" => $bio
+            ]
+        );
+
+        return $result;
+    }
+
+    public function updateAuthor($authorId, $firstName, $lastName, $bio)
+    {
+        $db = new Connection();
+        $result = $db->run(
+            "UPDATE author
+            SET first_name = :firstName,
+                last_name = :lastName,
+                bio = :bio
+            WHERE id = :authorId",
+            [
+                "firstName" => $firstName,
+                "lastName" => $lastName,
+                "bio" => $bio,
+                "authorId" => $authorId
+            ]
+        );
+
+        return $result;
+    }
+
+    public function deleteAuthor($authorId)
+    {
+        $db = new Connection();
+        $result = $db->run(
+            "UPDATE author
+            SET is_deleted = 1
+            WHERE id = :authorId AND is_deleted IS NULL",
+            ["authorId" => $authorId]
         );
 
         return $result;

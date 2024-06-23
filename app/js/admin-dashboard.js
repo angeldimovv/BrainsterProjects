@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  window.location.hash = "#manageAuthors";
+  window.location.hash = "#manageBooks"; //"#manageAuthors";
 
   $("#manageAuthorsBtn").click(function () {
     showSection("manageAuthors", "manageAuthorsBtn");
@@ -36,4 +36,19 @@ $(document).ready(function () {
     $(".admin-btn").removeClass(["on-click", "text-primary"]);
     $("#" + buttonId).addClass(["on-click", "text-primary"]);
   }
+
+  $("select#selectAuthor").change(function () {
+    var selectedAuthorId = $(this).val();
+
+    $.get(
+      `../app/processing/api/get-authors.php?authorId=${selectedAuthorId}`,
+      function (data) {
+        $(this).empty();
+        $("#authorId").val(data.id);
+        $("#editFirstName").val(data.first_name);
+        $("#editLastName").val(data.last_name);
+        $("#editBio").val(data.bio);
+      }
+    );
+  });
 });
