@@ -1,8 +1,20 @@
+<?php
+session_start();
+
+if (isset($_SESSION['loginStatus'])) {
+    if ($_SESSION['user']['role'] === 'admin') {
+        header('Location: dashboard.php');
+        exit();
+    }
+    header('Location: index.php');
+    exit();
+}
+?>
 <!doctype html>
 <html lang="en">
 
 <head>
-    <title>Login Page</title>
+    <title>Registration Page</title>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -15,12 +27,43 @@
     <main>
         <div class="container vh-100 d-flex align-items-center justify-content-center text-center">
             <div class="row w-25 px-4 py-3 bg-primary-subtle rounded-3">
-                <form action="" method="POST">
+                <form action="./processing/register-user.php" method="POST">
+                    <?php if (isset($_SESSION['registerSuccess'])) : ?>
+                        <div class="bg-success rounded-2 py-2 my-2 text-light fw-semibold">
+                            <?= $_SESSION['registerSuccess'] ?>
+                        </div>
+                    <?php endif; ?>
                     <h1 class="mb-5 display-4 fw-semibold">Register</h1>
                     <div class="mb-4">
-                        <input type="email" class="form-control mb-3 bg-light" name="email" id="email" placeholder="Email Address" required />
-                        <input type="password" class="form-control mb-3 bg-light" name="password" id="password" placeholder="Password" required />
-                        <input type="password" class="form-control bg-light" name="repeatpassword" id="repeatpassword" placeholder="Repeat Password" required />
+                        <div class="mb-3">
+                            <input type="text" class="form-control bg-light" name="username" id="username" placeholder="Username" required />
+                            <?php if (!empty($_SESSION['registerErrors']['username'])) : ?>
+                                <small class="text-danger fw-semibold">
+                                    <?= $_SESSION['registerErrors']['username'] ?>
+                                </small>
+                            <?php endif; ?>
+                            <?php if (!empty($_SESSION['registerErrors']['usernameTaken'])) : ?>
+                                <small class="text-danger fw-semibold">
+                                    <?= $_SESSION['registerErrors']['usernameTaken'] ?>
+                                </small>
+                            <?php endif; ?>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control bg-light" name="password" id="password" placeholder="Password" required />
+                            <?php if (!empty($_SESSION['registerErrors']['password'])) : ?>
+                                <small class="text-danger fw-semibold">
+                                    <?= $_SESSION['registerErrors']['password'] ?>
+                                </small>
+                            <?php endif; ?>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control bg-light" name="repeatpassword" id="repeatpassword" placeholder="Repeat Password" required />
+                            <?php if (!empty($_SESSION['registerErrors']['repeatPassword'])) : ?>
+                                <small class="text-danger fw-semibold">
+                                    <?= $_SESSION['registerErrors']['repeatPassword'] ?>
+                                </small>
+                            <?php endif; ?>
+                        </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-75 fs-5">Submit</button>
                 </form>
@@ -33,3 +76,7 @@
 </body>
 
 </html>
+
+<?php
+unset($_SESSION['registerErrors']);
+unset($_SESSION['registerSuccess']);

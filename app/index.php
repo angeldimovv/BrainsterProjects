@@ -1,3 +1,16 @@
+<?php
+require_once './imports.php';
+
+use App\Classes\Book\Book;
+
+$bookObj = new Book();
+
+$allBooks = $bookObj->getAllBooks();
+
+echo '<pre>' . var_export($allBooks, true) . '</pre>';
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -26,19 +39,30 @@
                     <i class="fa-solid fa-book pe-2 fs-3"></i>
                     <a class="navbar-brand fs-4" href="#">Brainster Library</a>
                 </div>
-                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav mt-2 mt-lg-0 ms-sm-auto">
-                        <li class="nav-item">
-                            <a class="btn btn-primary me-sm-3 my-2 my-lg-0" href="./login.php">Sign in</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-warning" href="./register.php">Sign up</a>
-                        </li>
-                    </ul>
-                </div>
+                <?php if (!isset($_SESSION['loginStatus'])) : ?>
+                    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavId">
+                        <ul class="navbar-nav mt-2 mt-lg-0 ms-sm-auto">
+                            <li class="nav-item">
+                                <a class="btn btn-primary me-sm-3 my-2 my-lg-0" href="./login.php">Sign in</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-warning" href="./register.php">Sign up</a>
+                            </li>
+                        </ul>
+                    </div>
+                <?php else : ?>
+                    <div class="d-flex align-items-center">
+                        <?php if ($_SESSION['user']['role'] === 'admin') : ?>
+                            <a href="./dashboard.php" class="d-flex align-items-center text-dark fw-semibold link-underline link-underline-opacity-0 me-5">
+                                <i class="fa-solid fa-circle-user fs-3 text-dark me-2"></i>
+                                Dashboard</a>
+                        <?php endif; ?>
+                        <a href="./processing/logout-user.php" class="fw-bold text-dark link-underline link-underline-opacity-0">Logout</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </nav>
         <!-- Hero Section -->
@@ -79,33 +103,43 @@
         <hr class="m-0">
         <div class="container my-5">
             <div class="row row-cols-1 row-cols-lg-4 g-4">
-                <div class="col">
-                    <div class="card rounded-3 shadow-lg">
-                        <div class="content w-100 h-100">
-                            <div class="front">
-                                <img src="https://api.dicebear.com/9.x/pixel-art/svg" alt="">
-                            </div>
-                            <div class="back rounded-3 py-4 text-start d-flex flex-column align-items-center text-dark">
-                                <h2 class="fs-2 fw-bold">Title</h2>
-                                <hr class="w-75 border-2">
-                                <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Author: </span>Test Test</p>
-                                <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Category: </span>Category 1</p>
-                                <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Published on: </span>2003</p>
-                                <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Pages: </span>666</p>
+                <?php foreach ($allBooks as $book) {
+                    $currentBook = $bookObj->getAllBookDataById($book['id']);
+                ?>
+                    <div class="col">
+                        <div class="card rounded-3 shadow-lg">
+                            <div class="content w-100 h-100">
+                                <div class="front">
+                                    <img src="<?= $currentBook['image_url'] ?>" alt="" style="height:400px;">
+                                </div>
+                                <div class="back rounded-3 py-4 text-start d-flex flex-column align-items-center text-dark">
+                                    <h2 class="fs-3 fw-bold text-center"><?= $currentBook['title'] ?></h2>
+                                    <hr class="w-75 border-2">
+                                    <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Author: </span><?= $currentBook['authorFirstName'] ?> <?= $currentBook['authorLastName'] ?></p>
+                                    <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Category: </span><?= $currentBook['categoryName'] ?></p>
+                                    <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Published on: </span><?= $currentBook['publication_year'] ?></p>
+                                    <p class="fs-5 fw-semibold mb-2"><span class="text-dark fw-bold">Pages: </span><?= $currentBook['pages'] ?></p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
     </main>
     <footer class="position-sticky bottom-0 start-50 v-100 bg-dark text-center">
-        <p class="py-2 mb-0 text-light fs-5">"Those who dare to fail miserably can achieve greatly." - John F. Kennedy</p>
+        <p class="py-2 mb-0 text-light fs-5" id="quote"></p>
     </footer>
+
     <!-- Bootstrap JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script src="./js/index.js"></script>
 </body>
 
 </html>
