@@ -1,3 +1,18 @@
+<?php
+session_start();
+
+if (!$_SESSION['loginStatus']) {
+    header('Location: login.php');
+    exit();
+}
+
+if ($_SESSION['loginStatus'] && $_SESSION['user']['role'] !== 'admin') {
+    header('Location: index.php');
+    exit();
+}
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -29,9 +44,12 @@
                     <i class="fa-solid fa-book pe-2 fs-3"></i>
                     <a class="navbar-brand fs-4" href="./index.php">Brainster Library</a>
                 </div>
-                <a href="./dashboard.php" class="d-flex align-items-center text-dark fw-semibold link-underline link-underline-opacity-0">
-                    <i class="fa-solid fa-circle-user fs-3 text-dark me-2"></i>
-                    Dashboard</a>
+                <div class="d-flex align-items-center">
+                    <a href="./dashboard.php" class="d-flex align-items-center text-dark fw-semibold link-underline link-underline-opacity-0 me-5">
+                        <i class="fa-solid fa-circle-user fs-3 text-dark me-2"></i>
+                        Dashboard</a>
+                    <a href="./processing/logout-user.php" class="fw-bold text-dark link-underline link-underline-opacity-0">Logout</a>
+                </div>
             </div>
         </nav>
     </header>

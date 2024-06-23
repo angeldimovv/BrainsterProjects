@@ -5,9 +5,9 @@ use App\Classes\User\User;
 require_once("../imports.php");
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'])) {
-    $userObj = new User();
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $userObj = new User();
 
     $user = $userObj->validateUser($username, $password);
 
@@ -15,10 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['username'])) {
         $_SESSION['user'] = $user;
 
         if ($user['role'] === 'admin') {
+            $_SESSION['loginStatus'] = true;
+            $_SESSION['userRole'] = 'admin';
             header("Location: ../dashboard.php");
             exit();
         }
 
+        $_SESSION['loginStatus'] = true;
         header('Location: ../index.php');
         exit();
     }

@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -26,19 +30,30 @@
                     <i class="fa-solid fa-book pe-2 fs-3"></i>
                     <a class="navbar-brand fs-4" href="#">Brainster Library</a>
                 </div>
-                <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="collapsibleNavId">
-                    <ul class="navbar-nav mt-2 mt-lg-0 ms-sm-auto">
-                        <li class="nav-item">
-                            <a class="btn btn-primary me-sm-3 my-2 my-lg-0" href="./login.php">Sign in</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="btn btn-warning" href="./register.php">Sign up</a>
-                        </li>
-                    </ul>
-                </div>
+                <?php if (!isset($_SESSION['loginStatus'])) : ?>
+                    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="collapsibleNavId">
+                        <ul class="navbar-nav mt-2 mt-lg-0 ms-sm-auto">
+                            <li class="nav-item">
+                                <a class="btn btn-primary me-sm-3 my-2 my-lg-0" href="./login.php">Sign in</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-warning" href="./register.php">Sign up</a>
+                            </li>
+                        </ul>
+                    </div>
+                <?php else : ?>
+                    <div class="d-flex align-items-center">
+                        <?php if ($_SESSION['user']['role'] === 'admin') : ?>
+                            <a href="./dashboard.php" class="d-flex align-items-center text-dark fw-semibold link-underline link-underline-opacity-0 me-5">
+                                <i class="fa-solid fa-circle-user fs-3 text-dark me-2"></i>
+                                Dashboard</a>
+                        <?php endif; ?>
+                        <a href="./processing/logout-user.php" class="fw-bold text-dark link-underline link-underline-opacity-0">Logout</a>
+                    </div>
+                <?php endif; ?>
             </div>
         </nav>
         <!-- Hero Section -->
