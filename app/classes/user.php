@@ -20,6 +20,7 @@ class User
                 "role" => $defaultRole
             ]
         );
+        $db->kill();
     }
 
     public function getUserId($username)
@@ -30,6 +31,7 @@ class User
             "SELECT id FROM user WHERE username = :username",
             ["username" => $username]
         )->fetch();
+        $db->kill();
 
         return $result ? $result['id'] : null;
     }
@@ -42,6 +44,7 @@ class User
             "SELECT * FROM user WHERE username = :username",
             ["username" => $username]
         )->fetch();
+        $db->kill();
 
         if ($user) {
             if (password_verify($password, $user['password'])) {
@@ -60,6 +63,7 @@ class User
             "SELECT * FROM user WHERE username = :username",
             ["username" => $username]
         )->fetch();
+        $db->kill();
 
         if ($user) {
             return true;
