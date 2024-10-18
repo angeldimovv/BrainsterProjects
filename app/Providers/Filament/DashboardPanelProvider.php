@@ -31,6 +31,9 @@ class DashboardPanelProvider extends PanelProvider
                 'primary' => '#e87b22',
             ])
             ->font('Roboto')
+            ->favicon(asset('favicon.ico'))
+            ->brandLogo(asset('img/mhra-logo-transparent.png'))
+            ->brandLogoHeight('4rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
