@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Agenda extends Model
 {
@@ -22,5 +23,10 @@ class Agenda extends Model
     public function items(): HasMany
     {
         return $this->hasMany(AgendaItem::class);
+    }
+
+    public function events(): HasOne
+    {
+        return $this->hasOne(Event::class);
     }
 }

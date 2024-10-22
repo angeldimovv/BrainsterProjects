@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             AgendaSeeder::class,
             AgendaDateSeeder::class,
             AgendaItemSeeder::class,
+            EventSeeder::class,
         ]);
     }
 }
