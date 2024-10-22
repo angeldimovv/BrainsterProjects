@@ -10,6 +10,7 @@ return new class extends Migration {
         Schema::create('agenda_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('agenda_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('agenda_date_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->time('time');
             $table->string('title');
             $table->text('description');
