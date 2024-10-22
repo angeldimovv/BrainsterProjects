@@ -9,6 +9,6 @@ class AgendaSeeder extends Seeder
 {
     public function run(): void
     {
-        Agenda::factory(10)->create();
+        Agenda::factory(30)->create();
     }
 }

@@ -14,7 +14,7 @@ class AgendaDateFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => $this->faker->date(),
+            'date' => $this->faker->dateTimeThisYear('+1 year')->format('Y-m-d'),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
 

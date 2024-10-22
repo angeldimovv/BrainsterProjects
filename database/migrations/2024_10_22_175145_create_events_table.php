@@ -1,5 +1,7 @@
 <?php
 
+use App\Enum\EventStatus;
+use App\Enum\EventType;
 use App\Models\Agenda;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -18,8 +20,8 @@ return new class extends Migration {
             $table->date('date');
             $table->string('location');
             $table->integer('ticket_price');
-            $table->enum('type', ['normal', 'conference'])->default('normal');
-            $table->enum('status', ['upcoming', 'finished'])->default('upcoming');
+            $table->enum('type', EventType::toArray())->default(EventType::NORMAL);
+            $table->enum('status', EventStatus::toArray())->default(EventStatus::UPCOMING);
             $table->timestamps();
         });
     }
