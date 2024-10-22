@@ -45,6 +45,10 @@ class User extends Authenticatable
         return $this->hasMany(Badge::class);
     }
 
+    public function blogs(): HasMany
+    {
+        return $this->hasMany(Blog::class);
+    }
 
     /**
      * Get the attributes that should be cast.
