@@ -32,6 +32,7 @@ class DashboardPanelProvider extends PanelProvider
             ])
             ->font('Roboto')
             ->favicon(asset('favicon.ico'))
+            ->brandName('MHRA')
             ->brandLogo(asset('img/mhra-logo-transparent.png'))
             ->brandLogoHeight('4rem')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
