@@ -17,8 +17,8 @@ class ConnectionFactory extends Factory
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
 
-            'user_id' => User::inRandomOrder()->first()->id,
-            'friend_id' => User::inRandomOrder()->first()->id,
+            'user_id' => User::factory(),
+            'friend_id' => User::factory(),
         ];
     }
 }

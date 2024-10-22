@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             AgendaDateSeeder::class,
             AgendaItemSeeder::class,
             EventSeeder::class,
+            SpeakerSeeder::class,
+            EventSpeakerSeeder::class,
         ]);
     }
 }
