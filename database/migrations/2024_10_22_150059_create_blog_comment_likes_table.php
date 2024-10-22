@@ -17,6 +17,7 @@ return new class extends Migration {
         Schema::table('blog_comment_likes', function (Blueprint $table) {
             $table->foreign('blog_comment_id')->references('id')->on('blog_comments')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unique(['blog_comment_id', 'user_id']);
         });
     }
 
