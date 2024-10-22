@@ -2,23 +2,23 @@
 
 namespace Database\Factories;
 
-use App\Models\Badge;
-use App\Models\User;
-use App\Models\UserBadge;
+use App\Models\Agenda;
+use App\Models\AgendaDate;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class UserBadgeFactory extends Factory
+class AgendaDateFactory extends Factory
 {
-    protected $model = UserBadge::class;
+    protected $model = AgendaDate::class;
 
     public function definition(): array
     {
         return [
-            'user_id' => User::inRandomOrder()->first()->id,
-            'badge_id' => Badge::inRandomOrder()->first()->id,
+            'date' => $this->faker->date(),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
+
+            'agenda_id' => Agenda::inRandomOrder()->first()->id,
         ];
     }
 }

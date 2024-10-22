@@ -18,8 +18,8 @@ class BlogCommentLikeFactory extends Factory
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
 
-            'blog_comment_id' => BlogComment::inRandomOrder()->first(),
-            'user_id' => User::inRandomOrder()->first(),
+            'blog_comment_id' => BlogComment::inRandomOrder()->first()->id,
+            'user_id' => User::inRandomOrder()->first()->id,
         ];
     }
 }
