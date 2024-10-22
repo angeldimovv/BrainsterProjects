@@ -50,6 +50,31 @@ class User extends Authenticatable
         return $this->hasMany(Blog::class);
     }
 
+    public function comments(): HasMany
+    {
+        return $this->hasMany(BlogComment::class);
+    }
+
+    public function comment_likes(): HasMany
+    {
+        return $this->hasMany(BlogCommentLike::class);
+    }
+
+    public function given_recommendations(): HasMany
+    {
+        return $this->hasMany(Recommendation::class, 'giver_id');
+    }
+
+    public function received_recommendations(): HasMany
+    {
+        return $this->hasMany(Recommendation::class, 'receiver_id');
+    }
+
+    public function connections(): HasMany
+    {
+        return $this->hasMany(Connection::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *
