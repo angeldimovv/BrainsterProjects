@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             SpeakerSeeder::class,
             EventSpeakerSeeder::class,
-            CompanyInfo::class,
+            CompanyInfoSeeder::class,
         ]);
     }
 }
