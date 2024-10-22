@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Agenda;
+use App\Models\CompanyInfo;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,6 +31,7 @@ class DatabaseSeeder extends Seeder
             EventSeeder::class,
             SpeakerSeeder::class,
             EventSpeakerSeeder::class,
+            CompanyInfo::class,
         ]);
     }
 }
