@@ -14,13 +14,13 @@ class BlogFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->title(),
+            'title' => $this->faker->sentence(),
             'body' => $this->faker->paragraph(5),
             'related_blogs' => $this->faker->randomElements(range(1, 10), $this->faker->numberBetween(0, 4)),
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
 
-            'user_id' => User::inRandomOrder()->first()->id,
+            'user_id' => User::factory(),
         ];
     }
 }

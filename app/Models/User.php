@@ -64,9 +64,9 @@ class User extends Authenticatable implements HasName, HasAvatar
         return $this->hasMany(BlogComment::class);
     }
 
-    public function comment_likes(): HasMany
+    public function comment_likes(): BelongsToMany
     {
-        return $this->hasMany(BlogCommentLike::class);
+        return $this->belongsToMany(BlogCommentLike::class, 'blog_comment_likes', 'user_id', 'blog_comment_id');
     }
 
     public function given_recommendations(): HasMany

@@ -18,7 +18,7 @@ class AgendaDateFactory extends Factory
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
 
-            'agenda_id' => Agenda::inRandomOrder()->first()->id,
+            'agenda_id' => Agenda::factory(),
         ];
     }
 }

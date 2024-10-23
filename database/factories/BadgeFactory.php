@@ -12,8 +12,10 @@ class BadgeFactory extends Factory
 
     public function definition(): array
     {
+        $name = $this->faker->word();
         return [
-            'name' => $this->faker->word(),
+            'name' => $name,
+            'image_url' => 'https://api.dicebear.com/9.x/shapes/svg?seed=' . $name,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ];

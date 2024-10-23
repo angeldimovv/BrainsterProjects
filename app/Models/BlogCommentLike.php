@@ -15,7 +15,7 @@ class BlogCommentLike extends Model
         'user_id',
     ];
 
-    public function blogComment(): BelongsTo
+    public function comment(): BelongsTo
     {
         return $this->belongsTo(BlogComment::class);
     }
