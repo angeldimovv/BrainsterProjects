@@ -3,13 +3,16 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasName, HasAvatar
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
@@ -46,9 +49,9 @@ class User extends Authenticatable
         return $this->hasOne(ActivityLog::class);
     }
 
-    public function badges(): HasMany
+    public function badges(): BelongsToMany
     {
-        return $this->hasMany(Badge::class);
+        return $this->belongsToMany(Badge::class, 'user_badges');
     }
 
     public function blogs(): HasMany
@@ -92,5 +95,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getFilamentName(): string
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    public function getFilamentAvatarUrl(): string
+    {
+        return $this->profile_picture;
     }
 }
