@@ -12,7 +12,7 @@ class CompanyInfoFactory extends Factory
     public function definition(): array
     {
         return [
-            'hero_image' => $this->faker->url(),
+            'hero_image' => 'https://api.dicebear.com/9.x/shapes/svg?seed=' . $this->faker->word(),
             'social_media' => [
                 'facebook' => 'https://www.facebook.com/' . $this->faker->word(),
                 'twitter' => 'https://www.twitter.com/' . $this->faker->word(),
