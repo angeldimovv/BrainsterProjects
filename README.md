@@ -1,4 +1,4 @@
-# Laravel 11 Project Setup Guide
+# Laravel - MHRA Project
 
 ## Prerequisites
 
@@ -9,7 +9,7 @@
 
 ## Installation Steps
 
-1. **Open a Console and clone the repository:**
+1. **Open a Terminal/Console and clone the repository:**
     ```sh
     git clone -b project03 https://git.brainster.co/Angel.Dimov-FS15/BrainsterProjects_AngelDimovFS15.git project
     cd project
