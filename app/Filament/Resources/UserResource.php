@@ -102,6 +102,7 @@ class UserResource extends Resource
     {
         return [
             RelationManagers\ActivityLogRelationManager::class,
+            RelationManagers\ConnectionsRelationManager::class,
         ];
     }
 
