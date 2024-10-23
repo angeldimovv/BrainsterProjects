@@ -27,6 +27,15 @@ class Speaker extends Model
 
     public function events(): BelongsToMany
     {
-        return $this->belongsToMany(Event::class);
+        return $this->belongsToMany(Event::class, 'event_speakers');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function ($event) {
+            $event->photo = 'https://ui-avatars.com/api/?background=111111&color=fff&length=1&font-size=0.65&format=svg&name=' . $event->first_name;
+        });
     }
 }

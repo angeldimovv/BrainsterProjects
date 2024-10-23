@@ -40,7 +40,7 @@ class Event extends Model
 
     public function speakers(): BelongsToMany
     {
-        return $this->belongsToMany(Speaker::class);
+        return $this->belongsToMany(Speaker::class, 'event_speakers');
     }
 
     protected static function boot(): void
