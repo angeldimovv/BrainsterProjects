@@ -15,7 +15,7 @@ class AgendaItemFactory extends Factory
     public function definition(): array
     {
         return [
-            'time' => $this->faker->time(),
+            'time' => $this->faker->time('H:i', null),
             'title' => $this->faker->word(),
             'description' => $this->faker->paragraph(),
 

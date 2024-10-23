@@ -2,10 +2,17 @@
 
 namespace App\Enum;
 
-enum EventType: string
+use Filament\Support\Contracts\HasLabel;
+
+enum EventType: string implements HasLabel
 {
-    case NORMAL = 'normal';
-    case CONFERENCE = 'conference';
+    case NORMAL = 'Normal';
+    case CONFERENCE = 'Conference';
+
+    public function getLabel(): ?string
+    {
+        return $this->value;
+    }
 
     public static function toArray(): array
     {

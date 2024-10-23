@@ -2,10 +2,17 @@
 
 namespace App\Enum;
 
-enum EventStatus: string
+use Filament\Support\Contracts\HasLabel;
+
+enum EventStatus: string implements HasLabel
 {
-    case UPCOMING = 'upcoming';
-    case FINISHED = 'finished';
+    case UPCOMING = 'Upcoming';
+    case FINISHED = 'Finished';
+
+    public function getLabel(): ?string
+    {
+        return $this->value;
+    }
 
     public static function toArray(): array
     {
