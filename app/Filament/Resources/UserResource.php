@@ -27,7 +27,7 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Personal Info')
+                Forms\Components\Section::make('Profile Info')
                 ->schema([
                     Forms\Components\TextInput::make('first_name')
                         ->required()
@@ -35,19 +35,14 @@ class UserResource extends Resource
                     Forms\Components\TextInput::make('last_name')
                         ->required()
                         ->maxLength(255),
-                ])->columns(2),
                 Forms\Components\TextInput::make('profile_picture')
                     ->nullable()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
-                Forms\Components\Section::make('User Activity')
-                ->schema([
+                    ->maxLength(255),
                     Forms\Components\Select::make('badges')
                     ->relationship('badges', 'name')
                     ->multiple()
-                    ->preload()
-                    ->required(),
-                ])->columns(2)
+                    ->preload(),
+                ])->columns(2),
             ]);
     }
 
@@ -106,8 +101,7 @@ class UserResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
-
+            RelationManagers\ActivityLogRelationManager::class,
         ];
     }
 
