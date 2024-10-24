@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enum\SpeakerType;
 use App\Filament\Resources\SpeakerResource\Pages;
 use App\Filament\Resources\SpeakerResource\RelationManagers;
 use App\Models\Speaker;
@@ -36,6 +37,9 @@ class SpeakerResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('type')
+                    ->options(SpeakerType::class)
+                    ->required(),
                 Forms\Components\TextInput::make('photo')
                     ->required()
                     ->maxLength(255),
@@ -53,6 +57,8 @@ class SpeakerResource extends Resource
                 Tables\Columns\TextColumn::make('last_name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('type')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Added On')

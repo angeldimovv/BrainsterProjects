@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enum\SpeakerType;
 use App\Models\Speaker;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
@@ -17,6 +18,7 @@ class SpeakerFactory extends Factory
             'first_name' => $first_name,
             'last_name' => $this->faker->lastName(),
             'title' => $this->faker->title(),
+            'type' => $this->faker->randomElement(SpeakerType::toArray()),
             'social_media' => json_encode([
                 'twitter' => 'https:://twitter.com/' . $this->faker->word(),
                 'linkedin' => 'https:://linkedin.com/' . $this->faker->word(),
